@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Customers{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.add_customer') }}">Add Customer</a>{% endblock %}
+{% block content %}
+<h1>Customer Data</h1>
+<div class="table-scroll"><table>
+  <thead><tr><th>Company Name</th><th>Last Name</th><th>First Name</th><th>Address1</th><th>Address2</th><th>City</th><th>State</th><th>Zipcode</th><th class="num">Price</th></tr></thead>
+  <tbody>{% for c in customers %}
+    <tr><td>{{ c.company }}</td><td>{{ c.contact_last }}</td><td>{{ c.contact_first }}</td><td>{{ c.address1 }}</td><td>{{ c.address2 }}</td><td>{{ c.city }}</td><td>{{ c.state }}</td><td>{{ c.zipcode }}</td><td class="num">{{ c.unit_price|price }}</td></tr>
+  {% endfor %}</tbody>
+</table></div>
+{% endblock %}

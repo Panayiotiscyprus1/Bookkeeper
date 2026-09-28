@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Create PO{% endblock %}
+{% block content %}
+<form class="card" method="post">
+  <div class="title">Create PO</div>
+  <label for="part_id">Part :</label>
+  <select id="part_id" name="part_id">
+    {% for p in parts %}<option value="{{ p.id }}" {% if request.form.get('part_id') == p.id|string %}selected{% endif %}>{{ p.name }}: {{ p.vendor.company }} @ {{ p.unit_price|price }}{% if p.needs_reorder %} ⚠ reorder{% endif %}</option>{% endfor %}
+  </select>
+  <label for="qty">Quantity ordered :</label>
+  <input id="qty" name="qty" type="number" min="1" required value="{{ request.form.get('qty', '') }}">
+  <label class="check"><input type="checkbox" name="receive_now" value="1" checked> Goods arrive now (uncheck to wait for delivery)</label>
+  <label for="qty_received">Quantity actually received (blank = same as ordered) :</label>
+  <input id="qty_received" name="qty_received" type="number" min="1" value="{{ request.form.get('qty_received', '') }}">
+  <p><button class="primary" type="submit">Create PO</button></p>
+  <p class="hint">You are billed for what arrives. Terms net 30: the bill sits in Accounts Payable until the month-end close.</p>
+</form>
+{% endblock %}

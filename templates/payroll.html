@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Payroll History{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.pay_employee') }}">Pay Employee</a>{% endblock %}
+{% block content %}
+<h1>Payroll Payments/History</h1>
+<div class="table-scroll"><table>
+  <thead><tr><th>Date Paid</th><th>Employee</th><th class="num">Salary</th><th class="num">Bonus</th><th class="num">Federal Tax Withheld</th><th class="num">State Tax Withheld</th><th class="num">Social Security</th><th class="num">Medicare</th><th class="num">Amount Paid (net)</th><th class="num">Withholding</th><th></th></tr></thead>
+  <tbody>{% for r in runs %}
+    <tr><td>{{ r.date }}</td><td>{{ r.employee.name }}</td><td class="num">{{ r.salary|money }}</td><td class="num">{{ r.bonus|money }}</td><td class="num">{{ r.federal|money }}</td><td class="num">{{ r.state|money }}</td><td class="num">{{ r.social_security|money }}</td><td class="num">{{ r.medicare|money }}</td><td class="num">{{ r.net|money }}</td><td class="num">{{ r.withholding|money }}</td>
+      <td class="no-print"><a href="{{ url_for('main.before_after', entry_id=r.entry_id) }}">before/after</a></td></tr>
+  {% else %}<tr><td colspan="11">No payroll events yet.</td></tr>{% endfor %}
+  </tbody>
+</table></div>
+<table style="max-width:560px">
+  <thead><tr><th>Total Disbursement (net)</th><th>Total Withholding</th><th>Total Payroll Expense</th></tr></thead>
+  <tbody><tr><td>{{ total_net|money }}</td><td>{{ total_withholding|money }}</td><td>{{ total_gross|money }}</td></tr></tbody>
+</table>
+{% endblock %}

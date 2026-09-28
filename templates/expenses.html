@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Expense Accounts{% endblock %}
+{% block extra_tools %}<form method="post" action="{{ url_for('main.pay_bill') }}"><input type="hidden" name="expense_id" value="all"><button type="submit">Pay all unpaid bills this month</button></form>{% endblock %}
+{% block content %}
+<h1>Expense Accounts</h1>
+<div class="table-scroll"><table>
+  <thead><tr><th>Expense</th><th class="num">Annual budget</th><th class="num">Cost per Month</th><th class="num">Paid this year</th><th>This month</th><th class="no-print"></th></tr></thead>
+  <tbody>{% for r in rows %}
+    <tr><td>{{ r.exp.name }}</td><td class="num">{{ r.exp.annual_budget|money }}</td><td class="num">{{ (r.monthly|round|int)|money }}</td><td class="num">{{ r.paid|money }}</td>
+      <td>{% if r.paid_this_month %}<span class="badge ok">paid</span>{% else %}unpaid{% endif %}</td>
+      <td class="no-print">{% if not r.paid_this_month and r.next_amount %}
+        <form method="post" action="{{ url_for('main.pay_bill') }}"><input type="hidden" name="expense_id" value="{{ r.exp.id }}"><button class="inline" type="submit">Pay {{ r.next_amount|money }}</button></form>{% endif %}</td></tr>
+  {% endfor %}
+    <tr class="total"><td>Total</td><td class="num">{{ total_annual|money }}</td><td class="num">{{ ((total_annual / 12)|round|int)|money }}</td><td></td><td></td><td class="no-print"></td></tr>
+  </tbody>
+</table></div>
+<p class="note">10 operating expense accounts, $200,000/year excluding salary and payroll taxes (those use the separate Payroll and Payroll Withholding accounts).</p>
+{% endblock %}

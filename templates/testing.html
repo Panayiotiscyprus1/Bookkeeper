@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Month-End Close &amp; Testing{% endblock %}
+{% block content %}
+<h1>Testing Features</h1>
+<h2>Current Date (UTC): {{ today }}</h2>
+<form class="card" method="post" action="{{ url_for('main.close_month') }}">
+  <div class="title">Month-End Close</div>
+  <p>Closes {{ close_date }}: collects all receivables ({{ open_ar|money }}) into cash and pays all vendor bills
+    ({{ open_ap|money }}), then advances the date to the 1st of next month.</p>
+  <label class="check"><input type="checkbox" name="run_payroll" value="1"> Also run payroll for every employee (dated {{ close_date }})</label>
+  <label class="check"><input type="checkbox" name="pay_bills" value="1"> Also pay this month's unpaid fixed bills</label>
+  <p><button class="primary" type="submit">Close Month &amp; Advance Date</button></p>
+</form>
+
+<h2>Settings</h2>
+<form class="card" method="post" action="{{ url_for('main.save_settings') }}">
+  <label class="check"><input type="checkbox" name="employer_taxes" value="1" {% if employer_taxes %}checked{% endif %}>
+    Book employer FICA match (6.2% + 1.45%) as an extra payroll expense</label>
+  <p class="hint">Off by default to match the course sample, which only books the employee's withholding.</p>
+  <p><button type="submit">Save settings</button></p>
+</form>
+
+<h2>Reset the books</h2>
+<form class="card" method="post" action="{{ url_for('main.reset') }}" onsubmit="return confirm('Erase all transactions and start over?')">
+  <label class="check"><input type="radio" name="preset" value="fresh" checked style="width:auto;margin-right:6px"> Initial conditions: $200,000 invested on Jan 1 2026, no inventory</label>
+  <label class="check"><input type="radio" name="preset" value="turnin" style="width:auto;margin-right:6px"> Turn-in starting point: 40,000 trucks built and paid for, Feb 1 2026</label>
+  <p><button type="submit">Reset</button></p>
+</form>
+{% endblock %}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Mr. Truck Inc.{% endblock %} · ENG566 Bookkeeper</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a href="{{ url_for('main.menu') }}">Mr. Truck Inc. · ENG566 Bookkeeper</a>
+    <span class="date">Current date: <strong>{{ today }}</strong></span>
+  </div>
+</header>
+<main class="wrap">
+  <div class="print-header">Mr. Truck Inc. · printed as of {{ today }}</div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}<div class="flash {{ cat }}">{{ msg }}</div>{% endfor %}
+  {% endwith %}
+  {% if low_stock and request.endpoint not in ('main.create_po',) %}
+    <div class="warn">⚠ Low inventory, reorder: {{ low_stock|join(', ') }}.
+      <a href="{{ url_for('main.create_po') }}">Create PO</a></div>
+  {% endif %}
+  {% block toolbar %}
+  <div class="toolbar">
+    <a class="btn" href="{{ url_for('main.menu') }}">← Back to Main</a>
+    <button type="button" onclick="window.print()">Print / Save as PDF</button>
+    {% block extra_tools %}{% endblock %}
+  </div>
+  {% endblock %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

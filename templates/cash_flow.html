@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% import "_statements.html" as st %}
+{% block title %}Cash Flow Statement{% endblock %}
+{% block content %}
+<h1>Cash Flow Statement <span class="hint">year to date, through {{ today }} (direct method)</span></h1>
+<div style="max-width:620px">{{ st.cash_flow(cf) }}</div>
+<p class="note">Ending cash ties to the balance sheet: {{ bs.cash|money }}
+  {% if cf.ending_cash == bs.cash %}<span class="badge ok">✓</span>{% else %}<span class="badge bad">✗</span>{% endif %}</p>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% import "_statements.html" as st %}
+{% block title %}Balance Sheet{% endblock %}
+{% block content %}
+<h1>Balance Sheet <span class="hint">as of {{ today }}</span></h1>
+{{ st.balance_sheet(bs) }}
+{% endblock %}

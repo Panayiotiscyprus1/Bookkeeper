@@ -1,0 +1,70 @@
+{% macro income_statement(inc) %}
+<table>
+  <thead><tr><th colspan="2">Sales</th></tr></thead>
+  <tbody>
+    <tr><td>Sales</td><td class="num">{{ inc.sales|money }}</td></tr>
+    <tr><td>COGS</td><td class="num">{{ inc.cogs|money }}</td></tr>
+    <tr class="sub"><td>Gross Profit</td><td class="num">{{ inc.gross_profit|money }}</td></tr>
+  </tbody>
+  <thead><tr><th colspan="2">Expenses</th></tr></thead>
+  <tbody>
+    <tr><td>Payroll (net wages)</td><td class="num">{{ inc.payroll|money }}</td></tr>
+    <tr><td>Payroll Withholding (taxes)</td><td class="num">{{ inc.payroll_withholding|money }}</td></tr>
+    {% if inc.employer_taxes %}<tr><td>Employer Payroll Taxes</td><td class="num">{{ inc.employer_taxes|money }}</td></tr>{% endif %}
+    {% for name, amount in inc.opex %}
+    <tr><td>&nbsp;&nbsp;{{ name }}</td><td class="num">{{ amount|money }}</td></tr>
+    {% endfor %}
+    <tr class="sub"><td>Bills (operating expenses)</td><td class="num">{{ inc.bills|money }}</td></tr>
+    <tr class="sub"><td>Total Expenses</td><td class="num">{{ inc.total_expenses|money }}</td></tr>
+  </tbody>
+  <thead><tr><th colspan="2">Results</th></tr></thead>
+  <tbody>
+    <tr><td>Operating Income</td><td class="num">{{ inc.operating_income|money }}</td></tr>
+    <tr><td>Other Income</td><td class="num">{{ inc.other_income|money }}</td></tr>
+    <tr><td>Income Taxes</td><td class="num">{{ inc.income_taxes|money }}</td></tr>
+    <tr class="total"><td>Net Income</td><td class="num">{{ inc.net_income|money }}</td></tr>
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro balance_sheet(bs) %}
+<div class="table-scroll">
+<table>
+  <thead><tr><th>Assets</th><th class="num"></th><th>Liabilities &amp; Net Worth</th><th class="num"></th></tr></thead>
+  <tbody>
+    <tr><td>Cash</td><td class="num">{{ bs.cash|money }}</td><td>Accounts Payable</td><td class="num">{{ bs.ap|money }}</td></tr>
+    <tr><td>Accounts Receivable</td><td class="num">{{ bs.ar|money }}</td><td>Notes Payable</td><td class="num">{{ bs.notes_payable|money }}</td></tr>
+    <tr><td>Inventory</td><td class="num">{{ bs.inventory|money }}</td><td>Accruals</td><td class="num">{{ bs.accruals|money }}</td></tr>
+    <tr><td>&nbsp;&nbsp;raw parts / finished goods</td><td class="num">{{ bs.raw|money }} / {{ bs.finished|money }}</td><td></td><td></td></tr>
+    <tr class="sub"><td>Total Current Assets</td><td class="num">{{ bs.current_assets|money }}</td><td>Total Current Liabilities</td><td class="num">{{ bs.current_liabilities|money }}</td></tr>
+    <tr><td>Land/Buildings</td><td class="num">{{ bs.land|money }}</td><td>Mortgage</td><td class="num">{{ bs.mortgage|money }}</td></tr>
+    <tr><td>Equipment</td><td class="num">{{ bs.equipment|money }}</td><td>Total Long Term Debt</td><td class="num">{{ bs.long_term|money }}</td></tr>
+    <tr><td>Furniture and Fixtures</td><td class="num">{{ bs.furniture|money }}</td><td>Total Liabilities</td><td class="num">{{ bs.total_liabilities|money }}</td></tr>
+    <tr class="sub"><td>Total Fixed Assets</td><td class="num">{{ bs.fixed_assets|money }}</td><td>Owner's Capital + Retained Earnings</td><td class="num">{{ bs.owner_capital|money }} + {{ bs.retained_earnings|money }}</td></tr>
+    <tr class="total"><td>Total Assets</td><td class="num">{{ bs.total_assets|money }}</td><td>Net Worth</td><td class="num">{{ bs.net_worth|money }}</td></tr>
+    <tr><td></td><td></td><td>Total Liabilities &amp; Net Worth</td><td class="num">{{ bs.total_liab_and_worth|money }}</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="note">Balance check (Assets = Liabilities + Net Worth):
+  {% if bs.balanced %}<span class="badge ok">✓ balanced</span>{% else %}<span class="badge bad">✗ out of balance</span>{% endif %}</p>
+{% endmacro %}
+
+{% macro cash_flow(cf) %}
+<table>
+  {% for section in ['operating', 'investing', 'financing'] %}
+  <thead><tr><th>Cash flows from {{ section }} activities</th><th class="num"></th></tr></thead>
+  <tbody>
+    {% for label, amount in cf.sections[section].items() %}
+    <tr><td>{{ label }}</td><td class="num">{{ amount|money }}</td></tr>
+    {% endfor %}
+    <tr class="sub"><td>Net cash from {{ section }} activities</td><td class="num">{{ cf.totals[section]|money }}</td></tr>
+  </tbody>
+  {% endfor %}
+  <tbody>
+    <tr><td>Beginning cash</td><td class="num">{{ cf.beginning_cash|money }}</td></tr>
+    <tr><td>Net change in cash</td><td class="num">{{ cf.net_change|money }}</td></tr>
+    <tr class="total"><td>Ending cash</td><td class="num">{{ cf.ending_cash|money }}</td></tr>
+  </tbody>
+</table>
+{% endmacro %}

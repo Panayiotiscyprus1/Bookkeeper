@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Paid Expenses{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.expenses') }}">Pay a Bill</a>{% endblock %}
+{% block content %}
+<h1>Expenses Paid</h1>
+<table style="max-width:640px">
+  <thead><tr><th>Date Paid</th><th>Expense</th><th class="num">Cost</th></tr></thead>
+  <tbody>{% for p in payments %}
+    <tr><td>{{ p.date }}</td><td>{{ p.expense.name }}</td><td class="num">{{ p.amount|money }}</td></tr>
+  {% else %}<tr><td colspan="3">No bills paid yet.</td></tr>{% endfor %}
+    <tr class="total"><td>Total</td><td></td><td class="num">{{ total|money }}</td></tr>
+  </tbody>
+</table>
+{% endblock %}

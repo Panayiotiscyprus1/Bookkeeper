@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Pay Employee{% endblock %}
+{% block content %}
+<form class="card" method="post">
+  <div class="title">Pay Employee</div>
+  <label for="employee_id">Employee :</label>
+  <select id="employee_id" name="employee_id">
+    {% for e in employees %}<option value="{{ e.id }}">{{ e.name }} ({{ e.annual_salary|money }}/yr)</option>{% endfor %}
+  </select>
+  <label for="bonus">Bonus this period ($, optional) :</label>
+  <input id="bonus" name="bonus" type="number" step="0.01" min="0" value="0">
+  <p><button class="primary" type="submit">Pay Employee</button></p>
+  <p class="hint">Pays one month of salary on the current date. Taxes withheld are remitted immediately,
+    so the full gross amount leaves cash.{% if employer_taxes %} Employer FICA match is ON.{% endif %}</p>
+</form>
+<h2>Paycheck preview (2026 withholding, no bonus)</h2>
+<div class="table-scroll"><table>
+  <thead><tr><th>Employee</th><th class="num">Gross</th><th class="num">Federal</th><th class="num">Illinois</th><th class="num">Social Security</th><th class="num">Medicare</th><th class="num">Net pay</th></tr></thead>
+  <tbody>{% for e in employees %}{% set salary, c = previews[e.id] %}
+    <tr><td>{{ e.name }}</td><td class="num">{{ c.gross|money }}</td><td class="num">{{ c.federal|money }}</td><td class="num">{{ c.state|money }}</td><td class="num">{{ c.social_security|money }}</td><td class="num">{{ c.medicare|money }}</td><td class="num">{{ c.net|money }}</td></tr>
+  {% endfor %}</tbody>
+</table></div>
+<p class="note">Federal: IRS Pub. 15-T (2026) percentage method, W-4 2020+ standard withholding. Illinois: 4.95% less $2,925 per IL-W-4 allowance.
+  Social Security 6.2% up to $184,500; Medicare 1.45% (+0.9% over $200,000).</p>
+{% endblock %}

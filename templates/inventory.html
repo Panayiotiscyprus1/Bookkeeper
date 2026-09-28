@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Inventory{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.create_po') }}">Create PO</a><a class="btn" href="{{ url_for('main.build') }}">Build Units</a>{% endblock %}
+{% block content %}
+<h1>Inventory</h1>
+<div class="table-scroll"><table>
+  <thead><tr><th>Part</th><th>Vendor</th><th class="num">Price/Unit</th><th class="num">Per truck</th><th class="num">Quantity</th><th class="num">Value</th><th class="num">Reorder point</th><th>Re-order</th></tr></thead>
+  <tbody>{% for p in parts %}
+    <tr><td>{{ p.name }}</td><td>{{ p.vendor.company }}</td><td class="num">{{ p.unit_price|price }}</td><td class="num">{{ p.qty_per_unit }}</td><td class="num">{{ p.qty_on_hand|num }}</td><td class="num">{{ p.value|money }}</td><td class="num">{{ p.reorder_point|num }}</td><td>{% if p.needs_reorder %}<span class="flag">X</span>{% endif %}</td></tr>
+  {% endfor %}</tbody>
+</table></div>
+<table style="max-width:760px">
+  <thead><tr><th>Total parts value</th><th>COG/Unit (standard)</th><th>Total units that can be built from current parts</th></tr></thead>
+  <tbody><tr><td>{{ parts_total|money }}</td><td>{{ (cost_per_unit|round|int)|money }}</td><td>{{ buildable|num }}</td></tr></tbody>
+</table>
+<table style="max-width:760px">
+  <thead><tr><th>Units under construction</th><th>Complete Units in Stock</th><th>Total Value</th></tr></thead>
+  <tbody><tr><td>0 <span class="hint">(builds complete instantly)</span></td><td>{{ fg.qty_on_hand|num }}</td><td>{{ fg.value|money }}</td></tr></tbody>
+</table>
+<p class="note">X = quantity on hand is below the reorder point (about one month of production). Parts are valued at moving-average cost.</p>
+{% endblock %}

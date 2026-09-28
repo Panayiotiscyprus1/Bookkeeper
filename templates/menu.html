@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block toolbar %}{% endblock %}
+{% block content %}
+<h1>ENG566 Computer Program: Main Menu</h1>
+<div class="kpis">
+  <div class="kpi"><div class="label">Cash</div><div class="value">{{ bs.cash|money }}</div></div>
+  <div class="kpi"><div class="label">Accounts receivable</div><div class="value">{{ bs.ar|money }}</div></div>
+  <div class="kpi"><div class="label">Accounts payable</div><div class="value">{{ bs.ap|money }}</div></div>
+  <div class="kpi"><div class="label">Trucks in stock / buildable</div><div class="value">{{ fg.qty_on_hand|num }} / {{ buildable|num }}</div></div>
+  <div class="kpi"><div class="label">Net worth</div><div class="value">{{ bs.net_worth|money }}
+    {% if bs.balanced %}<span class="badge ok">✓</span>{% else %}<span class="badge bad">✗</span>{% endif %}</div></div>
+</div>
+<div class="menu">
+  <section><h3>People</h3>
+    <a class="btn" href="{{ url_for('main.employees') }}">List Employees</a>
+    <a class="btn" href="{{ url_for('main.add_employee') }}">Add Employee</a>
+    <a class="btn" href="{{ url_for('main.customers') }}">List Customers</a>
+    <a class="btn" href="{{ url_for('main.add_customer') }}">Add Customer</a>
+    <a class="btn" href="{{ url_for('main.vendors') }}">List Vendors</a>
+    <a class="btn" href="{{ url_for('main.add_vendor') }}">Add Vendor</a>
+  </section>
+  <section><h3>Payroll &amp; expenses</h3>
+    <a class="btn" href="{{ url_for('main.pay_employee') }}">Pay Employee</a>
+    <a class="btn" href="{{ url_for('main.payroll') }}">Payroll History</a>
+    <a class="btn" href="{{ url_for('main.expenses') }}">Expense Accounts / Pay a Bill</a>
+    <a class="btn" href="{{ url_for('main.paid_expenses') }}">Paid Expenses</a>
+  </section>
+  <section><h3>Sales &amp; purchasing</h3>
+    <a class="btn" href="{{ url_for('main.create_invoice') }}">Create Invoice</a>
+    <a class="btn" href="{{ url_for('main.invoices') }}">Invoice History</a>
+    <a class="btn" href="{{ url_for('main.create_po') }}">Create PO</a>
+    <a class="btn" href="{{ url_for('main.purchase_orders') }}">PO History</a>
+    <a class="btn" href="{{ url_for('main.inventory') }}">Inventory</a>
+    <a class="btn" href="{{ url_for('main.build') }}">Build Units</a>
+  </section>
+  <section><h3>Statements</h3>
+    <a class="btn primary" href="{{ url_for('main.balance_sheet') }}">Balance Sheet</a>
+    <a class="btn primary" href="{{ url_for('main.income_statement') }}">Income Statement</a>
+    <a class="btn primary" href="{{ url_for('main.cash_flow') }}">Cash Flow Statement</a>
+    <a class="btn" href="{{ url_for('main.statements') }}">All Statements (print)</a>
+    <a class="btn" href="{{ url_for('main.journal') }}">Journal / Before &amp; After</a>
+    <a class="btn" href="{{ url_for('main.testing') }}">Month-End Close &amp; Testing</a>
+  </section>
+</div>
+{% endblock %}

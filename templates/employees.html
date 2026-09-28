@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Employees{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.add_employee') }}">Add Employee</a>{% endblock %}
+{% block content %}
+<h1>Employee Data</h1>
+<div class="table-scroll"><table>
+  <thead><tr><th>First Name</th><th>Last Name</th><th>Address1</th><th>Address2</th><th>City</th><th>State</th><th>Zipcode</th><th>SSN</th><th>Filing status</th><th>IL allowances</th><th class="num">Salary</th></tr></thead>
+  <tbody>{% for e in employees %}
+    <tr><td>{{ e.first_name }}</td><td>{{ e.last_name }}</td><td>{{ e.address1 }}</td><td>{{ e.address2 }}</td><td>{{ e.city }}</td><td>{{ e.state }}</td><td>{{ e.zipcode }}</td><td>{{ e.masked_ssn }}</td><td>{{ e.filing_status }}</td><td>{{ e.state_allowances }}</td><td class="num">{{ e.annual_salary|money }}</td></tr>
+  {% endfor %}</tbody>
+</table></div>
+{% endblock %}

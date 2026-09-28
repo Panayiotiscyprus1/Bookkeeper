@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "_statements.html" as st %}
+{% block title %}Before / After #{{ entry.id }}{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.journal') }}">Journal</a>{% endblock %}
+{% block content %}
+<h1>Transaction #{{ entry.id }}: {{ entry.memo }}</h1>
+<p class="note">{{ entry.date }} · Postings:
+  {% for l in entry.lines %}{{ l.account.name }} {% if l.debit %}Dr {{ l.debit|money }}{% else %}Cr {{ l.credit|money }}{% endif %}{% if not loop.last %}; {% endif %}{% endfor %}</p>
+<section class="page">
+<h2>Income Statement</h2>
+<div class="two-col">
+  <div><h3>Before</h3>{{ st.income_statement(inc_before) }}</div>
+  <div><h3>After</h3>{{ st.income_statement(inc_after) }}</div>
+</div>
+</section>
+<section>
+<h2>Balance Sheet: Before</h2>
+{{ st.balance_sheet(bs_before) }}
+<h2>Balance Sheet: After</h2>
+{{ st.balance_sheet(bs_after) }}
+</section>
+{% endblock %}

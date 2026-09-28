@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Build Units{% endblock %}
+{% block content %}
+<form class="card" method="post">
+  <div class="title">Build Units</div>
+  <p>With the existing inventory <strong>{{ buildable|num }}</strong> units can be built.</p>
+  <label for="units">Number of units to build from inventory :</label>
+  <input id="units" name="units" type="number" min="1" max="{{ buildable }}" required value="{{ request.form.get('units', '') }}">
+  <p><button class="primary" type="submit">Build Units</button></p>
+</form>
+<h2>Bill of materials (per truck)</h2>
+<table style="max-width:560px">
+  <thead><tr><th>Part</th><th class="num">Qty per truck</th><th class="num">On hand</th><th class="num">Enough for</th></tr></thead>
+  <tbody>{% for p in parts %}
+    <tr><td>{{ p.name }}</td><td class="num">{{ p.qty_per_unit }}</td><td class="num">{{ p.qty_on_hand|num }}</td><td class="num">{{ (p.qty_on_hand // p.qty_per_unit)|num }}</td></tr>
+  {% endfor %}</tbody>
+</table>
+{% endblock %}

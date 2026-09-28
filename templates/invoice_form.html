@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Create Invoice{% endblock %}
+{% block content %}
+<form class="card" method="post">
+  <div class="title">Create Invoice</div>
+  <label for="customer_id">Customer :</label>
+  <select id="customer_id" name="customer_id">
+    {% for c in customers %}<option value="{{ c.id }}" {% if request.form.get('customer_id') == c.id|string %}selected{% endif %}>{{ c.company }} ({{ c.unit_price|price }}/truck)</option>{% endfor %}
+  </select>
+  <label for="units">Number of Units to Invoice :</label>
+  <input id="units" name="units" type="number" min="1" required value="{{ request.form.get('units', '') }}">
+  <p><strong style="color:var(--green-dark)"><em>Number of Units in Stock: {{ fg.qty_on_hand|num }}</em></strong></p>
+  <p><button class="primary" type="submit">Create Invoice</button></p>
+  <p class="hint">Terms net 30: the sale is booked as a receivable now and collected into cash at the month-end close.</p>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}PO History{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.create_po') }}">Create PO</a>{% endblock %}
+{% block content %}
+<h1>Purchase Order History</h1>
+<div class="table-scroll"><table>
+  <thead><tr><th>PO Number</th><th>Date</th><th>Supplier</th><th>Part</th><th class="num">Ordered</th><th class="num">Received</th><th class="num">Price/Part</th><th class="num">Total billed</th><th>Status</th><th></th></tr></thead>
+  <tbody>{% for po in pos %}
+    <tr><td>{{ po.id }}</td><td>{{ po.date }}</td><td>{{ po.vendor.company }}</td><td>{{ po.part.name }}</td><td class="num">{{ po.qty_ordered|num }}</td><td class="num">{{ po.qty_received|num if po.qty_received else '-' }}</td><td class="num">{{ po.unit_price|price }}</td><td class="num">{{ po.total|money }}</td><td>{{ po.status }}</td>
+      <td class="no-print">{% if po.received_date %}<a href="{{ url_for('main.before_after', entry_id=po.entry_id) }}">before/after</a>{% else %}
+        <form method="post" action="{{ url_for('main.receive_po', po_id=po.id) }}" style="display:flex;gap:4px">
+          <input name="qty_received" type="number" min="1" value="{{ po.qty_ordered }}" style="width:110px">
+          <button class="inline" type="submit">Receive</button></form>{% endif %}</td></tr>
+  {% else %}<tr><td colspan="10">No purchase orders yet.</td></tr>{% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% import "_statements.html" as st %}
+{% block title %}Income Statement{% endblock %}
+{% block content %}
+<h1>Income Statement <span class="hint">year to date, through {{ today }}</span></h1>
+<div style="max-width:560px">{{ st.income_statement(inc) }}</div>
+<p class="note">Income taxes: no corporate income tax is booked (the business is treated as a pass-through; the owner pays income tax personally).</p>
+{% endblock %}

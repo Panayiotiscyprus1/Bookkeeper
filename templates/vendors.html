@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Vendors{% endblock %}
+{% block extra_tools %}<a class="btn" href="{{ url_for('main.add_vendor') }}">Add Vendor</a>{% endblock %}
+{% block content %}
+<h1>Vendor Data</h1>
+<div class="table-scroll"><table>
+  <thead><tr><th>Company Name</th><th>Part</th><th class="num">Price/Unit</th><th class="num">Qty per truck</th><th>Address1</th><th>Address2</th><th>City</th><th>State</th><th>Zip</th></tr></thead>
+  <tbody>{% for p in parts %}
+    <tr><td>{{ p.vendor.company }}</td><td>{{ p.name }}</td><td class="num">{{ p.unit_price|price }}</td><td class="num">{{ p.qty_per_unit }}</td><td>{{ p.vendor.address1 }}</td><td>{{ p.vendor.address2 }}</td><td>{{ p.vendor.city }}</td><td>{{ p.vendor.state }}</td><td>{{ p.vendor.zipcode }}</td></tr>
+  {% endfor %}</tbody>
+</table></div>
+{% endblock %}

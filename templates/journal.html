@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Journal{% endblock %}
+{% block content %}
+<h1>General Journal</h1>
+<p class="note">Every transaction, newest first. Open "before / after" to see the income statement and balance sheet
+  immediately before and after that transaction (use it for the turn-in screenshots).</p>
+<div class="table-scroll"><table>
+  <thead><tr><th>#</th><th>Date</th><th>Description</th><th>Account</th><th class="num">Debit</th><th class="num">Credit</th><th class="no-print"></th></tr></thead>
+  <tbody>{% for e in entries %}
+    {% for l in e.lines %}
+    <tr><td>{% if loop.first %}{{ e.id }}{% endif %}</td><td>{% if loop.first %}{{ e.date }}{% endif %}</td>
+      <td>{% if loop.first %}{{ e.memo }}{% endif %}</td><td>{{ l.account.name }}</td>
+      <td class="num">{{ l.debit|money(true) }}</td><td class="num">{{ l.credit|money(true) }}</td>
+      <td class="no-print">{% if loop.first %}<a href="{{ url_for('main.before_after', entry_id=e.id) }}">before / after</a>{% endif %}</td></tr>
+    {% endfor %}
+  {% endfor %}</tbody>
+</table></div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% import "_statements.html" as st %}
+{% block title %}Financial Statements{% endblock %}
+{% block content %}
+<section class="page"><h1>Income Statement <span class="hint">year to date, through {{ today }}</span></h1>
+<div style="max-width:560px">{{ st.income_statement(inc) }}</div></section>
+<section class="page"><h1>Balance Sheet <span class="hint">as of {{ today }}</span></h1>
+{{ st.balance_sheet(bs) }}</section>
+<section><h1>Cash Flow Statement <span class="hint">through {{ today }}</span></h1>
+<div style="max-width:620px">{{ st.cash_flow(cf) }}</div></section>
+{% endblock %}

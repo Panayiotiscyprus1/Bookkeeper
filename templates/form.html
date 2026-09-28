@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<form class="card" method="post">
+  <div class="title">{{ title }}</div>
+  {% for f in fields %}
+    <label for="{{ f.name }}">{{ f.label }}{% if f.required %} *{% endif %} :</label>
+    {% if f.type == 'select' %}
+      <select id="{{ f.name }}" name="{{ f.name }}">
+        {% for val, text in f.options %}<option value="{{ val }}" {% if request.form.get(f.name) == val %}selected{% endif %}>{{ text }}</option>{% endfor %}
+      </select>
+    {% else %}
+      <input id="{{ f.name }}" name="{{ f.name }}" type="{{ f.type }}" {% if f.step %}step="{{ f.step }}"{% endif %}
+             {% if f.type == 'number' %}min="0"{% endif %}
+             value="{{ request.form.get(f.name, f.value) }}" {% if f.required %}required{% endif %}>
+    {% endif %}
+    {% if f.hint %}<div class="hint">{{ f.hint }}</div>{% endif %}
+  {% endfor %}
+  <p><button class="primary" type="submit">{{ submit }}</button></p>
+  <a class="hint" href="{{ back }}">Cancel</a>
+</form>
+{% endblock %}
