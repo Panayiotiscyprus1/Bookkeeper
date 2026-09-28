@@ -1,4 +1,4 @@
-# ENG/TE 566 Bookkeeper: Mr. Truck Inc.
+# TE 566 Bookkeeper: Mr. Truck Inc.
 
 A small bookkeeping program for a toy-truck manufacturer. Every business activity
 (pay an employee, create an invoice, create a PO, build units, pay a bill, month-end close)
@@ -53,21 +53,8 @@ Inventory is valued at moving-average cost. Withheld taxes are treated as remitt
 immediately. Employer FICA match is optional (off by default, switch in Testing).
 No corporate income tax is booked.
 
-## Producing the turn-in PDF
-
-1. **Month-End Close & Testing → Reset → Turn-in starting point.** Parts for 40,000 trucks
-   were bought, built and paid for in January; the date is Feb 1 2026.
-   Starting statements: cash $177,200, finished goods $22,800, net worth $200,000.
-2. Print **All Statements** (Cmd+P → Save as PDF). These are the initial conditions.
-3. **Create Invoice:** Smith Co., 20,000 units = **$50,000 sale** (receivable).
-4. **Create PO:** Tank, 200,000 units @ $0.10 = **$20,000 inventory purchase** (payable).
-5. **Pay Employee:** John Smith, one monthly payroll.
-6. For each transaction, open **Journal / Before & After** and print its page.
-   It shows the income statement and balance sheet right before and right after it.
-7. Combine the PDFs and submit with this folder's code (zip it).
 
 ## Files
-
 ```
 app.py              app factory, `flask seed` command
 models.py           database tables
